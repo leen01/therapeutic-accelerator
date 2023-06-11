@@ -1,9 +1,36 @@
+import os
+import json
+import glob
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+import time
+import jsonlines # for opening jsonl files
+import yaml # for configuration files 
+
 # connection libraries
+from sqlalchemy.orm import Session
+from sqlalchemy import select, Table, Column, Integer, String, Boolean, MetaData
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.types import ARRAY
 from google.cloud.sql.connector import Connector, IPTypes
 import pg8000
 import sqlalchemy
 
+with open("../config/main.yaml", "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+
+with open("../config/keys.yaml", "r") as f:
+    keys = yaml.load(f, Loader=yaml.FullLoader)
+
+root_path = config['paths']['root']
+mount_path = os.path.join(root_path, config['paths']['mount'])
+
+attribute_files = glob.glob("".join([mount_path, '/extracted/*?.jsonl']))
+
 # connect to goolge cloud postgres db
+source 
+
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     """
     Initializes a connection pool for a Cloud SQL instance of Postgres.
@@ -44,7 +71,7 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
         creator=getconn,
         # [START_EXCLUDE]
         # Pool size is the maximum number of permanent connections to keep.
-        pool_size=5,
+        pool_size=100,
         # Temporarily exceeds the set pool_size if no connections are available.
         max_overflow=2,
         # The total number of concurrent connections for your application will be
@@ -61,5 +88,31 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     )
     return pool
 
+def json_to_df(j): 
+    """ Create dataframe to upload into database """
+    return pd.DataFrame([json.loads(j)])
+
+def df_to_db(df): 
+    with pool.connect() as db_conn:
+        df.to_sql('article_attributes', con = db_conn, if_exists='append', index = False)
+
+def preprocess_df(df): 
+    df.year = df.year.astype("Int64")
+    return df
+
 pool = connect_with_connector()
-pool.connect()
+
+chunk_size = 1000
+
+for jl in tqdm(attribute_files): 
+    with jsonlines.open(jl) as f:
+        count = 0
+        df = pd.DataFrame()
+        for line in tqdm(f.iter()): 
+            count += 1
+            if count == chunk_size: 
+                df_to_db(df) # reads json, converts to dataframe, preprocess functions and appends results to database
+                df = pd.DataFrame()
+                count = 0
+            else: 
+                df = pd.concat([df, preprocess_df(pd.DataFrame([line]))])
