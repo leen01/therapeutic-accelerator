@@ -1,0 +1,25 @@
+# Add files to database
+
+project_id: w210-capstone-ta
+
+instance:
+    name: w210-therapeutic-accelerator
+    region: us-central1
+
+database:
+    connection: w210-capstone-ta:us-central1:articles
+    region: us-central1
+    user: postgres
+    password: V>4;MYzd&.n^B&2%
+    name: article_attributes
+    ip_private: True
+
+semantic_scholar:
+    # Get info about the latest release
+    latest: http://api.semanticscholar.org/datasets/v1/release/latest
+    release: http://api.semanticscholar.org/datasets/v1/release
+    papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
+
+paths: 
+    root: /home/nick_lee_berkeley_edu/
+    mount: "mount-folder"
