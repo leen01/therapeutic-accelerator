@@ -16,6 +16,7 @@ database:
 
 semantic_scholar:
     # Get info about the latest release
+<<<<<<< HEAD
     releases:
         latest: http://api.semanticscholar.org/datasets/v1/release/latest
         release: http://api.semanticscholar.org/datasets/v1/release
@@ -29,3 +30,12 @@ paths:
     mount: mount-folder
     papers: mount-attributes
     wkdir: therapeutic_accelerator/db_work/
+=======
+    latest: http://api.semanticscholar.org/datasets/v1/release/latest
+    release: http://api.semanticscholar.org/datasets/v1/release
+    papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
+
+paths: 
+    root: /home/nick_lee_berkeley_edu/
+    mount: "mount-folder"
+>>>>>>> e782620a0cdc7fc07f0caea121b0a8fe68c3f44d
