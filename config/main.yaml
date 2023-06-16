@@ -3,20 +3,17 @@
 project_id: w210-capstone-ta
 
 instance:
-    name: w210-therapeutic-accelerator
-    region: us-central1
+    name: nlee-ubuntu-dev-01
+    region: us-east-1a
 
 database:
-    connection: w210-capstone-ta:us-central1:articles
-    region: us-central1
+    name: postgres
     user: postgres
-    password: V>4;MYzd&.n^B&2%
-    name: article_attributes
-    ip_private: True
+    port: 5432
+    host: database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com
 
 semantic_scholar:
     # Get info about the latest release
-<<<<<<< HEAD
     releases:
         latest: http://api.semanticscholar.org/datasets/v1/release/latest
         release: http://api.semanticscholar.org/datasets/v1/release
@@ -26,16 +23,10 @@ semantic_scholar:
         papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/s2orc
 
 paths: 
-    root: /home/nick_lee_berkeley_edu/
-    mount: mount-folder
+    root: /home/ubuntu/work/
+    mount: bucket
     papers: mount-attributes
     wkdir: therapeutic_accelerator/db_work/
-=======
     latest: http://api.semanticscholar.org/datasets/v1/release/latest
     release: http://api.semanticscholar.org/datasets/v1/release
     papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
-
-paths: 
-    root: /home/nick_lee_berkeley_edu/
-    mount: "mount-folder"
->>>>>>> e782620a0cdc7fc07f0caea121b0a8fe68c3f44d
