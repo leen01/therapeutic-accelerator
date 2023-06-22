@@ -1,0 +1,8 @@
+name: chroma
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - hnswlib
+  - openai
+  - langchain
