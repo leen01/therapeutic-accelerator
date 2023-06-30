@@ -1,0 +1,32 @@
+# Add files to database
+
+project_id: w210-capstone-ta
+
+instance:
+    name: nlee-ubuntu-dev-01
+    region: us-east-1a
+
+database:
+    name: postgres
+    user: postgres
+    port: 5432
+    host: database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com
+
+semantic_scholar:
+    # Get info about the latest release
+    releases:
+        latest: http://api.semanticscholar.org/datasets/v1/release/latest
+        release: http://api.semanticscholar.org/datasets/v1/release
+        papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
+    papers: 
+        attributes: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
+        papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/s2orc
+
+paths: 
+    root: /home/ubuntu/work/
+    mount: bucket
+    papers: mount-attributes
+    wkdir: therapeutic_accelerator/db_work/
+    latest: http://api.semanticscholar.org/datasets/v1/release/latest
+    release: http://api.semanticscholar.org/datasets/v1/release
+    papers: http://api.semanticscholar.org/datasets/v1/release/latest/dataset/papers
