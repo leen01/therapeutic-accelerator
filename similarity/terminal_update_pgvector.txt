@@ -1,0 +1,117 @@
+(base) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres
+Password: 
+psql: error: connection to server at "database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com" (172.31.24.37), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+connection to server at "database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com" (172.31.24.37), port 5432 failed: FATAL:  no pg_hba.conf entry for host "172.31.90.198", user "postgres", database "postgres", no encryption
+(base) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres
+Password: 
+psql (14.8 (Ubuntu 14.8-0ubuntu0.22.04.1), server 15.2)
+WARNING: psql major version 14, server major version 15.
+         Some psql features might not work.
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+postgres=> ALTER TABLE abstract_encodings_test4 ADD COLUMN vector_em vector(768);
+ALTER TABLE
+postgres=> \d
+postgres=> \d
+postgres=> select * from abstract_encodings_test4 limit 0;
+ paper_id | abstract | corpusid | encodings | lex_text | vector_em 
+----------+----------+----------+-----------+----------+-----------
+(0 rows)
+
+postgres=> select encodings from abstract_encodings_test4 limit 3;
+postgres=> select encodings from abstract_encodings_test4 order by random () limit 3;
+postgres=> select length(encodings) as len, count(*) as record_count from abstract_encodings_test4 group by 1 order by 2 desc limit 5;
+ len | record_count 
+-----+--------------
+  14 |        70089
+   8 |        49401
+     |        44677
+   7 |        12226
+  10 |         3647
+(5 rows)
+
+postgres=> select length(encodings) as len, count(*) as record_count from abstract_encodings_test4 group by 1 order by 2 desc limit 20;
+postgres=> select case when length(encodings) > 5000 then true else false end as has_encoding, count(*) as record_count from abstract_enco
+dings_test4 group by 1 order by 2 desc limit 20;
+ has_encoding | record_count 
+--------------+--------------
+ t            |       190569
+ f            |       183912
+(2 rows)
+
+postgres=> select encodings from abstract_encodings_test4 where length(encoding) > 5000 limit 1;
+ERROR:  column "encoding" does not exist
+LINE 1: ...odings from abstract_encodings_test4 where length(encoding) ...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "abstract_encodings_test4.encodings".
+postgres=> select encodings from abstract_encodings_test4 where length(encodings) > 5000 limit 1;
+postgres=> select encodings from abstract_encodings_test4 where length(encodings) > 20 and length(encodings) < 5000 order by random() limi
+t 1;
+            encodings             
+----------------------------------
+ 10.1111/j.1439-0507.2004.00988.x
+(1 row)
+
+postgres=> select encodings from abstract_encodings_test4 where length(encodings) > 25 and length(encodings) < 5000 order by random() limi
+t 1;
+         encodings          
+----------------------------
+ 10.1177/000348948209100408
+(1 row)
+
+postgres=> select encodings from abstract_encodings_test4 where length(encodings) > 5000 order by random() limit 1;
+postgres=> select encodings from abstract_encodings_test4 where length(encodings) > 5000 order by random() limit 1;
+postgres=> select trim(encodings) from abstract_encodings_test4 where length(encodings) > 5000 order by random() limit 1;
+postgres=> select cardinality(string_to_array(encodings,',')) from abstract_encodings_test4 where length(encodings) > 5000 limit 1;
+ cardinality 
+-------------
+         768
+(1 row)
+
+postgres=> select encodings::vector(768) from abstract_encodings_test4 where length(encodings) > 5000 limit 1;
+postgres=> select vector_em, count(*) from abstract_encodings_test4 group by 1 order by 2 desc;
+ vector_em | count  
+-----------+--------
+           | 374481
+(1 row)
+
+postgres=> update abstract_encodings_test4
+postgres-> set vector_em = encodings::vector(768)
+postgres-> where length(encodings) > 4000;
+UPDATE 190569
+postgres=> \d
+postgres=> \d
+postgres=> select * from abstract_encodings_test4 limit 0;
+ paper_id | abstract | corpusid | encodings | lex_text | vector_em 
+----------+----------+----------+-----------+----------+-----------
+(0 rows)
+
+postgres=> select paper_id,
+postgres-> abstract,
+postgres-> vector_em <=> (select vector_em from abstract_encodings_test4 where vector_em is not null limit 1) as sim
+postgres-> from abstract_encodings_test4
+postgres-> order by sim desc
+postgres-> limit 4;
+postgres=> select paper_id,
+abstract,
+(1 - (vector_em <=> (select vector_em from abstract_encodings_test4 where vector_em is not null limit 1))) as sim
+from abstract_encodings_test4
+order by sim desc
+limit 4;
+postgres=> select paper_id,
+abstract,vector_em <=> (select vector_em from abstract_encodings_test4 where vector_em is not null limit 1) as sim
+from abstract_encodings_test4                                                                            
+order by sim nulls last
+limit 4;
+postgres=> select paper_id,
+abstract,vector_em <=> (select vector_em from abstract_encodings_test4 where vector_em is not null order by random() limit 1) as cos_dist
+from abstract_encodings_test4
+order by cos_dist nulls last
+limit 5;
+postgres=> select paper_id,
+abstract,vector_em <=> (select vector_em from abstract_encodings_test4 where vector_em is not null order by random() limit 1) as cos_dist
+from abstract_encodings_test4
+order by cos_dist nulls last
+limit 5;
+postgres=> w
