@@ -1,0 +1,147 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab560
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\fs26 \cf0 (ta) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres\
+Password: \
+psql (14.8 (Ubuntu 14.8-0ubuntu0.22.04.1), server 14.7)\
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)\
+Type "help" for help.\
+\
+postgres=> \\d\
+                    List of relations\
+ Schema |           Name            |   Type   |  Owner   \
+--------+---------------------------+----------+----------\
+ public | abstracts                 | table    | postgres\
+ public | abstracts_encodings       | table    | postgres\
+ public | abstracts_encodings_test  | table    | postgres\
+ public | abstracts_encodings_test2 | table    | postgres\
+ public | abstracts_encodings_test3 | table    | postgres\
+ public | abstracts_specter         | table    | postgres\
+ public | assayTerms                | table    | postgres\
+ public | assayterms                | table    | postgres\
+ public | attributes                | table    | postgres\
+ public | authors                   | table    | postgres\
+ public | fulltext                  | table    | postgres\
+ public | fulltext_id_seq           | sequence | postgres\
+ public | testing_fun_things        | table    | postgres\
+(13 rows)\
+\
+postgres=> \\copy abstracts_encodings_test3 from 'abstracts_encodings_clean_3.csv' delimiter ',' csv;\
+COPY 11\
+postgres=> select * from abstracts_encodings_test3\
+postgres-> ;\
+\
+[12]+  Stopped                 psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres\
+(ta) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres\
+Password: \
+psql (14.8 (Ubuntu 14.8-0ubuntu0.22.04.1), server 14.7)\
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)\
+Type "help" for help.\
+\
+postgres=> \\d\
+                    List of relations\
+ Schema |           Name            |   Type   |  Owner   \
+--------+---------------------------+----------+----------\
+ public | abstracts                 | table    | postgres\
+ public | abstracts_encodings       | table    | postgres\
+ public | abstracts_encodings_test  | table    | postgres\
+ public | abstracts_encodings_test2 | table    | postgres\
+ public | abstracts_encodings_test3 | table    | postgres\
+ public | abstracts_specter         | table    | postgres\
+ public | assayTerms                | table    | postgres\
+ public | assayterms                | table    | postgres\
+ public | attributes                | table    | postgres\
+ public | authors                   | table    | postgres\
+ public | fulltext                  | table    | postgres\
+ public | fulltext_id_seq           | sequence | postgres\
+ public | testing_fun_things        | table    | postgres\
+(13 rows)\
+\
+postgres=> select paper_id from abstracts_encodings_test3;\
+                 paper_id                 \
+------------------------------------------\
+ e1a178675d773796c01f854bce1117800c6e41c2\
+ 549ee36c76bdfbc719e6afdd853b26e49985a056\
+ 829acd045d5bdb14c6fa955e156df1be823131fc\
+ a05dd554d9a05ee8de7a5aee760622170fc544f0\
+ 6245c050f9aba1553830e9245f2179d24ee3aa89\
+ 0c2c2d7c2c528bfd680aa7d57a0ca581d4c70562\
+ b8d16eea127d190fb2ab868b32ea2e77db5729c4\
+ 33eca290b938880e6f2b3f890aae97217838e927\
+ 97a100c54d73647163613e9b2af6796283d84b85\
+ f255573112fd1544ca600ccb388dce7960c74895\
+ ca3ac092bcf33df8cb87594632763bb435ed5dec\
+(11 rows)\
+\
+postgres=> \\d\
+                    List of relations\
+ Schema |           Name            |   Type   |  Owner   \
+--------+---------------------------+----------+----------\
+ public | abstracts                 | table    | postgres\
+ public | abstracts_encodings       | table    | postgres\
+ public | abstracts_encodings_test  | table    | postgres\
+ public | abstracts_encodings_test2 | table    | postgres\
+ public | abstracts_encodings_test3 | table    | postgres\
+ public | abstracts_specter         | table    | postgres\
+ public | assayTerms                | table    | postgres\
+ public | assayterms                | table    | postgres\
+ public | attributes                | table    | postgres\
+ public | authors                   | table    | postgres\
+ public | fulltext                  | table    | postgres\
+ public | fulltext_id_seq           | sequence | postgres\
+ public | testing_fun_things        | table    | postgres\
+(13 rows)\
+\
+postgres=> select * from abstracts_encodings limit 1;\
+\
+[13]+  Stopped                 psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres\
+(ta) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres\
+Password: \
+psql (14.8 (Ubuntu 14.8-0ubuntu0.22.04.1), server 14.7)\
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)\
+Type "help" for help.\
+\
+select \
+    lex_text,\
+    lex_text <<-> 'word' as sml\
+from abstract_encodings_test4\
+order by sml desc nulls last\
+limit 10;\
+\
+\
+with token_types as\
+         (select * from ts_token_type('default')),\
+        abstract_subset as (\
+                select paper_id, abstract from abstract_encodings_test4\
+        ),\
+token_set as \
+        (select paper_id, abstract, token, tokid, ordinality from abstract_subset, ts_parse('default', abstract) with ordinality),\
+lexizing_useful_tokens as\
+        (select paper_id,\
+                abstract,\
+                token,\
+                (ts_lexize('english_stem', token))[1]  as token_lexized,\
+                token_types.alias,\
+                token_types.description,\
+                ordinality as token_ordinality\
+        from token_set\
+        join token_types using (tokid)\
+        where (ts_lexize('english_stem', token))[1] is not null\
+        and alias in ('asciiword', 'word', 'asciihword', 'hword')),\
+to_compare as (select paper_id,\
+                abstract,\
+                string_agg(token_lexized, ' ' order by token_ordinality) as lexized_tokens\
+        from lexizing_useful_tokens\
+        group by paper_id, abstract),\
+to_update as (select paper_id, lexized_tokens\
+from to_compare)\
+update abstract_encodings_test4\
+set lex_text = to_update.lexized_tokens\
+from to_update\
+where abstract_encodings_test4.paper_id = to_update.paper_id\
+;}
