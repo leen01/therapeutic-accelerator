@@ -36,7 +36,7 @@ mkdir bucket
 mkdir attributes
 
 # mount buckets
-sudo s3fs papers-fulltext /home/ubuntu/work/bucket  -o passwd_file=$HOME/.passwd-s3fs,nonempty,rw,allow_other,complement_stat,mp_umask=002
+sudo s3fs papers-fulltext /home/ubuntu/work/bucket  -o passwd_file=$HOME/.passwd-s3fs,nonempty,rw,allow_other,complement_stat,mp_umask=002;
 sudo s3fs papers-attributes /home/ubuntu/work/attributes  -o passwd_file=$HOME/.passwd-s3fs,nonempty,rw,allow_other,complement_stat,mp_umask=002
 
 
