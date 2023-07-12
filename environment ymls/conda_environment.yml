@@ -25,4 +25,3 @@ dependencies:
   - google-cloud-sdk
   - omegaconf
   - sqlalchemy
-prefix: /home/nick_lee_berkeley_edu/anaconda3
