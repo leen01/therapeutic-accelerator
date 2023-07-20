@@ -10,6 +10,3 @@ def import_config():
         keys = yaml.load(f, Loader=yaml.FullLoader)
         
     return config, keys
-
-
-
