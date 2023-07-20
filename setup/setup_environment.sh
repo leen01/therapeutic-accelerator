@@ -41,8 +41,15 @@ conda env create -n ta --file /home/ubuntu/work/therapeutic_accelerator/setup/en
 curl -sSL https://install.python-poetry.org | python3 -
 
 # for install hnswlib need these packages on the instance
-sudo apt-get install build-essential libssl-dev libffi-dev # python3-dev
+sudo apt-get install build-essential libssl-dev libffi-dev python3-dev libpq-dev
 
 # use jupyter notebook in vscode
+
 poetry shell
-code .
+code . # open a with the venv
+poetry config virtualenvs.in-project true # create the install in the local project
+poetry install # get all the packages
+poetry env  info # get information about the poetry environme
+
+# ADD THE PYTHON ENVIRONMENT TO JUPYTER NOTEBOOK
+export PATH=/home/ubuntu/work/therapeutic_accelerator/.venv/bin/:$PATH
