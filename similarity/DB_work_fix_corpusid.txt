@@ -1,0 +1,623 @@
+(base) ubuntu@ip-172-31-90-198:~$ psql --host=database-1.cuaho2dof33c.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=postgres
+Password: 
+psql (14.8 (Ubuntu 14.8-0ubuntu0.22.04.1), server 15.2)
+WARNING: psql major version 14, server major version 15.
+         Some psql features might not work.
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+postgres=> SELECT paper_id, abstract, ts                             
+FROM abstract_encodings_test4 limit 1;
+postgres=> /dt
+postgres-> ;
+ERROR:  syntax error at or near "/"
+LINE 1: /dt
+        ^
+postgres=> /d
+postgres-> ;
+ERROR:  syntax error at or near "/"
+LINE 1: /d
+        ^
+postgres=> \dt
+                   List of relations
+ Schema |           Name            | Type  |  Owner   
+--------+---------------------------+-------+----------
+ public | abstract_encodings_test4  | table | postgres
+ public | abstracts                 | table | postgres
+ public | abstracts_encodings       | table | postgres
+ public | abstracts_encodings_test3 | table | postgres
+ public | assayTerms                | table | postgres
+ public | assayterms                | table | postgres
+ public | attributes                | table | postgres
+ public | authors                   | table | postgres
+ public | copy_test                 | table | postgres
+ public | fulltext                  | table | postgres
+(10 rows)
+
+postgres=> select 1;
+ ?column? 
+----------
+        1
+(1 row)
+
+postgres=> \d
+                    List of relations
+ Schema |           Name            |   Type   |  Owner   
+--------+---------------------------+----------+----------
+ public | abstract_encodings_test4  | table    | postgres
+ public | abstracts                 | table    | postgres
+ public | abstracts_encodings       | table    | postgres
+ public | abstracts_encodings_test3 | table    | postgres
+ public | assayTerms                | table    | postgres
+ public | assayterms                | table    | postgres
+ public | attributes                | table    | postgres
+ public | authors                   | table    | postgres
+ public | copy_test                 | table    | postgres
+ public | fulltext                  | table    | postgres
+ public | fulltext_id_seq           | sequence | postgres
+(11 rows)
+
+postgres=> \d abstracts_encodings_test4
+Did not find any relation named "abstracts_encodings_test4".
+postgres=> \d abstract_encodings_test4
+postgres=> \d attributes
+postgres=> CREATE INDEX on abstract_encodings_test4 (corpusid);
+CREATE INDEX
+postgres=> \d abstract_encodings_test4
+postgres=> analyze abstract_encodings_test4
+postgres-> ;
+ANALYZE
+postgres=> \d abstract_encodings_test4
+postgres=> ALTER TABLE abstract_encodings_test4 ALTER COLUMN corpusid TYPE bigint;
+ERROR:  column "corpusid" cannot be cast automatically to type bigint
+HINT:  You might need to specify "USING corpusid::bigint".
+postgres=> ALTER TABLE abstract_encodings_test4 ALTER COLUMN corpusid TYPE bigint USING corpusid::bigint;
+ERROR:  invalid input syntax for type bigint: "1979876672.0"
+postgres=> select '1979876672.0'::bigint
+postgres-> ;
+ERROR:  invalid input syntax for type bigint: "1979876672.0"
+LINE 1: select '1979876672.0'::bigint
+               ^
+postgres=> select '1979876672.0'::float 
+;
+   float8   
+------------
+ 1979876672
+(1 row)
+
+postgres=> select '1979876672.0'::float::bigint
+;
+    int8    
+------------
+ 1979876672
+(1 row)
+
+postgres=> ALTER TABLE abstract_encodings_test4 ALTER COLUMN corpusid TYPE bigint USING corpusid::float::bigint;
+ERROR:  invalid input syntax for type double precision: "conf/dev/LarsonGRBRP13"
+postgres=> select max(length(corpusid)) from attributes;
+ERROR:  function length(bigint) does not exist
+LINE 1: select max(length(corpusid)) from attributes;
+                   ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+postgres=> select max(len(corpusid)) from attributes;
+ERROR:  function len(bigint) does not exist
+LINE 1: select max(len(corpusid)) from attributes;
+                   ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+postgres=> select greatest(len(corpusid)) from attributes;
+ERROR:  function len(bigint) does not exist
+LINE 1: select greatest(len(corpusid)) from attributes;
+                        ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+postgres=> select length(corpusid) from attributes limit 1;
+ERROR:  function length(bigint) does not exist
+LINE 1: select length(corpusid) from attributes limit 1;
+               ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+postgres=> select len(corpusid) from attributes limit 1;
+ERROR:  function len(bigint) does not exist
+LINE 1: select len(corpusid) from attributes limit 1;
+               ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+postgres=> select max(corpusid) from attributes limit 1;
+    max    
+-----------
+ 258889076
+(1 row)
+
+postgres=> select max(length(corpusid::text)) from attributes limit 1;
+ max 
+-----
+   9
+(1 row)
+
+postgres=> \d
+                    List of relations
+ Schema |           Name            |   Type   |  Owner   
+--------+---------------------------+----------+----------
+ public | abstract_encodings_test4  | table    | postgres
+ public | abstracts                 | table    | postgres
+ public | abstracts_encodings       | table    | postgres
+ public | abstracts_encodings_test3 | table    | postgres
+ public | assayTerms                | table    | postgres
+ public | assayterms                | table    | postgres
+ public | attributes                | table    | postgres
+ public | authors                   | table    | postgres
+ public | copy_test                 | table    | postgres
+ public | fulltext                  | table    | postgres
+ public | fulltext_id_seq           | sequence | postgres
+(11 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_matches(corpusid, '[0-9]') is null limit 1;
+ERROR:  set-returning functions are not allowed in WHERE
+LINE 1: ...lect corpusid from abstract_encodings_test4 where regexp_mat...
+                                                             ^
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]') is null limit 1;
+ corpusid 
+----------
+ 
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[0-9].*') is null limit 1;
+ corpusid 
+----------
+ 
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[a-z]') is null limit 1;
+ corpusid 
+----------
+ 
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[A-Z].*') is null limit 1;
+ corpusid 
+----------
+ 
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*1.*') is null limit 1;
+ corpusid 
+----------
+ 
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*1.*') is not  null limit 1;
+  corpusid  
+------------
+ 2540182002
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*a.*') is not null limit 1;
+        corpusid        
+------------------------
+ conf/dev/LarsonGRBRP13
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*[a-z|A-Z].*') is not null limit 1;
+        corpusid        
+------------------------
+ conf/dev/LarsonGRBRP13
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*[a-z|A-Z].*') is not null limit 2;
+           corpusid           
+------------------------------
+ conf/dev/LarsonGRBRP13
+ journals/corr/abs-2211-11863
+(2 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*[a-z|A-Z].*') is not null limit 10;
+             corpusid             
+----------------------------------
+ journals/corr/abs-2211-11863
+ conf/ACMdis/TanTSH16
+ conf/cinc/LeturiondoRGGBD17
+ 10.1246/CL.1995.497
+ 10.1021/JP8088963
+ 10.1111/apa.14088
+ 10.1046/j.1540-8167.2004.04326.x
+ 10.1111/apt.12670
+ 10.1002/jgh3.12158
+ 10.1021/OP300110M
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*\.0') is not null limit 10;
+             corpusid             
+----------------------------------
+ 10.1046/j.1540-8167.2004.04326.x
+ 10.1111/j.1399-0012.2009.01037.x
+ 10.1097/IAE.0000000000003070
+ 2086017775.0
+ 10.1034/j.1398-9995.2003.00100.x
+ 2164274604.0
+ 2121658232.0
+ 2891327047.0
+ 1991185900.0
+ 613852431.0
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*.0') is not null limit 10;
+   corpusid   
+--------------
+ 3041044298
+ 2807729574
+ 2056171801
+ 1997322504
+ 1991185900.0
+ 1966042011
+ 2162135601
+ 2011101044
+ 2505820308
+ 613852431.0
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '.*\.0') is not null limit 10;
+   corpusid   
+--------------
+ 1991185900.0
+ 613852431.0
+ 1936696881.0
+ 2896907136.0
+ 1970676616.0
+ 2794310311.0
+ 2115551878.0
+ 1501715681.0
+ 2898451173.0
+ 2048903984.0
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]*\.0') is not null limit 10;
+   corpusid   
+--------------
+ 1991185900.0
+ 613852431.0
+ 1936696881.0
+ 2896907136.0
+ 1970676616.0
+ 2794310311.0
+ 2115551878.0
+ 1501715681.0
+ 2898451173.0
+ 2048903984.0
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]*\.0') is not null limit 10;
+   corpusid   
+--------------
+ 1991185900.0
+ 613852431.0
+ 1936696881.0
+ 2896907136.0
+ 1970676616.0
+ 2794310311.0
+ 2115551878.0
+ 1501715681.0
+ 2898451173.0
+ 2048903984.0
+(10 rows)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]*\.0') is not null;
+ count 
+-------
+ 20679
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]*\.0') is not null;
+ count 
+-------
+ 20679
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '[0-9]*\.0') is not null;
+ count  
+--------
+ 287953
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '[0-9]*') is not null;
+ count 
+-------
+     0
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '[0-9]*') is not null;
+ count  
+--------
+ 308632
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]$') is not null;
+ count 
+-------
+     0
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+$') is not null;
+ count  
+--------
+ 284283
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+\.0$') is not null;
+ count 
+-------
+ 19629
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+ count  
+--------
+ 303912
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+ count  
+--------
+ 303912
+(1 row)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+   corpusid   
+--------------
+ 2792052811.0
+ 2071868765
+ 2736652870
+ 3023701602
+ 2042582317
+ 2580453161
+ 2184753554
+ 2765873056
+ 2997666827
+ 2327089578
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+   corpusid   
+--------------
+ 1543543146
+ 2580984061
+ 2105754149
+ 1882932897
+ 2585353684
+ 2162453787.0
+ 2535577398
+ 2000699686
+ 1979421187
+ 2579417391
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+   corpusid   
+--------------
+ 2129119770
+ 2036768924
+ 2102054447.0
+ 2612337894
+ 2973472618
+ 2083023833
+ 2016410220
+ 2074623612.0
+ 2093626593
+ 2998128577
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 1
+0;
+         corpusid          
+---------------------------
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 10.1080/02640410500482982
+ 
+ 
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+ corpusid 
+----------
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+(10 rows)
+
+postgres=> select corpusid from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+ corpusid 
+----------
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+(10 rows)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() 
+limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null order by random() limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null limit 10;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+ count 
+-------
+  4720
+(1 row)
+
+postgres=> update abstract_encodings_test4 set corpusid = null where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+UPDATE 70569
+postgres=> select count(*) from abstract_encodings_test4 where not regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+ count 
+-------
+ 70569
+(1 row)
+
+postgres=> select count(corpusid) from abstract_encodings_test4 where regexp_match(corpusid, '^[0-9]+(\.0)?$') is not null;
+ count  
+--------
+ 303912
+(1 row)
+
+postgres=> ALTER TABLE abstract_encodings_test4 ALTER COLUMN corpusid TYPE bigint USING corpusid::float::bigint;
+ALTER TABLE
+postgres=> /d abstract_encodings_test4
+postgres-> ;
+ERROR:  syntax error at or near "/"
+LINE 1: /d abstract_encodings_test4
+        ^
+postgres=> \d abstract_encodings_test4
+;
+\d: extra argument ";" ignored
+postgres=> select * from attributes where corpusid = 2623872074;
+postgres=> select * from attributes where corpusid = 2221011838;
+postgres=> select * from attributes where corpusid = 3044193968;
+postgres=> select * from attributes where corpusid = 220971384;
+postgres=> select * from abstract_encodings_test4  where corpusid = 220971384;
+postgres=> select '36319425'::float::bigint;
+   int8   
+----------
+ 36319425
+(1 row)
+
+postgres=> select '36319425.0'::float::bigint;
+   int8   
+----------
+ 36319425
+(1 row)
+
+postgres=> \d
+                    List of relations
+ Schema |           Name            |   Type   |  Owner   
+--------+---------------------------+----------+----------
+ public | abstract_encodings_test4  | table    | postgres
+ public | abstracts                 | table    | postgres
+ public | abstracts_encodings       | table    | postgres
+ public | abstracts_encodings_test3 | table    | postgres
+ public | assayTerms                | table    | postgres
+ public | assayterms                | table    | postgres
+ public | attributes                | table    | postgres
+ public | authors                   | table    | postgres
+ public | copy_test                 | table    | postgres
+ public | fulltext                  | table    | postgres
+ public | fulltext_id_seq           | sequence | postgres
+(11 rows)
+
+postgres=> \d abstract_encodings_test4
+postgres=> select corpusid from attributes where url like '%e3689ed42a50dab5a06d930025740fd1bcb7275a';
+ corpusid 
+----------
+ 36319425
+(1 row)
+
+postgres=> select url is null, count(*) from attributes group by 1 order by 2 desc;
+ ?column? | count  
+----------+--------
+ f        | 729817
+(1 row)
+
+postgres=> select count(*), count(distinct url) from attributes;
+ count  | count  
+--------+--------
+ 729817 | 729817
+(1 row)
+
+postgres=> select attributes.corpusid, paper_id, abstract_encodings_test4.corpusid from attributes join abstract_encodings_test4 on paper_id = replace(url,'https://ww
+w.semanticscholar.org/paper/','') limit 1;
+ corpusid |                 paper_id                 |  corpusid  
+----------+------------------------------------------+------------
+ 23708908 | 6ec7c156b4173ad7ca0dbc654da9267474644a41 | 2765137431
+(1 row)
+
+postgres=> select attributes.corpusid as we_think_correct, paper_id, abstract_encodings_test4.corpusid as we_think_wrong from attributes join abstract_encodings_test4
+ on paper_id = replace(url,'https://www.semanticscholar.org/paper/','') limit 1;
+ we_think_correct |                 paper_id                 | we_think_wrong 
+------------------+------------------------------------------+----------------
+         23708908 | 6ec7c156b4173ad7ca0dbc654da9267474644a41 |     2765137431
+(1 row)
+
+postgres=> select attributes.corpusid as we_think_correct, paper_id, abstract_encodings_test4.corpusid as we_think_wrong from attributes join abstract_encodings_test4 on paper_id = replace(url,'https://www.semanticscholar.org/paper/','') limit 1 offset 1;
+ we_think_correct |                 paper_id                 | we_think_wrong 
+------------------+------------------------------------------+----------------
+         13232625 | c856627242a754d2d756b32843523e6d7a089148 |     1993137580
+(1 row)
+
+postgres=> select count(attributes.corpusid), count(paper_id) from attributes join abstract_encodings_test4 on paper_id = replace(url,'https://www.semanticscholar.org
+/paper/','');
+ count  | count  
+--------+--------
+ 374470 | 374470
+(1 row)
+
+postgres=> select count(attributes.corpusid), count(paper_id) from attributes join abstract_encodings_test4 on paper_id = replace(url,'https://www.semanticscholar.org/paper/','');
+ count  | count  
+--------+--------
+ 374470 | 374470
+(1 row)
+
+postgres=> select count(distinct attributes.corpusid), count(paper_id) from attributes join abstract_encodings_test4 on paper_id = replace(url,'https://www.semanticsc
+holar.org/paper/','');
+ count  | count  
+--------+--------
+ 374470 | 374470
+(1 row)
+
+postgres=> update abstract_encodings_test4 set corpusid = attributes.corpusid from attributes where paper_id = replace(url,'https://www.semanticscholar.org/paper/',''
+);
+UPDATE 374470
+postgres=> analyze abstract_encodings_test4;
+ANALYZE
+postgres=> \d abstract_encodings_test4
+postgres=> 
