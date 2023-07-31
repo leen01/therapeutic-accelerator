@@ -1,7 +1,7 @@
 # Therapeutic Accelerator: An AI Research Assistant
 Authors: Nicholas Lee, Vani Vijayakumar, Nic Brathwaite,
 
-**Mission**
+## Mission
 Our mission is to use artificial intelligence to accelerate pharmaceutical development by reducing time spent on literature reviews more time in the lab
 
 ## Product
