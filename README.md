@@ -24,7 +24,7 @@ Our initial findings showed that the T5 model worked best for loading, tokenizin
 T5 is an encoder - decoder model pre-trained on various tasks that works well with text tranformation and self supervised or unsupervised learning T5 Documentation: [here](https://huggingface.co/docs/transformers/model_doc/t5). 
 
 #### Similarity: 
-In order to improve the time and accuracy of our summarization and Q&A models we developed a similiarity model to find the most relevant papers based on a users input. Using PostgresML with web_search we created similarity scores based on the distance and frequency of words found within papers and a user's search terms. The model is also capable of directly finding papers with the provided paper id or abstract.
+In order to allow users to expand their knowledge base of a topic, we created a model that would find similiar papers based on a corpusID or texr input. We also used this function improve the time and accuracy of our summarization and Q&A models, we developed a similiarity model to find the most relevant papers based on a users input. Using Septer Embeddings and PostgresML with Postgres Full Text search, we created similarity scores based on the distance and frequency of words found within papers and a user's search terms. 
 
 #### Model Work: 
 LangChain provides the software architecture necessary to process large volumes of textual data paired with LLMs. For our project, we chose OpenAi because of how well it integrates with LangChain and it's flexibility to handle abstracts, full text documents, and perform Q&A with the LangChain framework. The structure for the summarization model handles text by mapping and reducing documents into partitioned segments to be fed into our model and generating a solution that encompasses each portion of a document. While our Q&A model uses a refined approach by thoroughly reviewing a given document and continuosly updating its generated answer as it parses it through the model.
@@ -36,7 +36,7 @@ In order to run these models on your local device, you will need to install the 
 
 ### Evaluation:
 #### ROGUE Scores:
-Due to the vast amount of papers we were working with in this project, our best evaluation and fluency check was using the L1 and L2 rouge scores to compare the common occurence of words from our generated summaries with the abstracts themseleves. 
+Our best evaluation and fluency check was using the L1 and L2 rouge scores to compare the common occurence of words from our generated summaries with the abstracts themseleves. Thid was a low cost and standardized way to benchmark our models. 
 
 ### Conclusion
 We hope that phramacist, scientist, researchers, students, and those who come across our project find the best suitable use for it within their professional and academic careers.
