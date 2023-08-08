@@ -24,4 +24,10 @@ T5 is an encoder - decoder model pre-trained on various tasks that works well wi
 
 - Similarity: In order to improve the time and accuracy of our summarization and Q&A models we developed a similiarity model to find the most relevant papers based on a users input. Using PostgresML with web_search we created similarity scores based on the distance and frequency of words found within papers and a user's search terms. The model is also capable of directly finding papers with the provided paper id or abstract.
 
-- Model Work: LangChain
+- Model Work: LangChain provides the software architecture necessary to process large volumes of textual data paired with LLMs. For our project, we chose OpenAi because of how well it integrates with LangChain and it's flexibility to handle abstracts, full text documents, and perform Q&A with the LangChain framework. The structure for the summarization model handles text by mapping and reducing documents into partitioned segments to be fed into our model and generating a solution that encompasses each portion of a document. While our Q&A model uses a refined approach by thoroughly reviewing a given document and continuosly updating its generated answer as it parses it through the model.
+  
+- The hugging face transformers required additional functions to handle larger inputs of text and our research led us to discover models such as LED (LongtransformerEncoderDecoder), BigBirdPegasus, variations of T5, variations of LED, and pipelines that utilize a combination of tokenizers and models to perform specific tasks. When generating solutions we adjusted additional parameters of the model such as the search beams, repeat n gram size, probability distribution threshold, unique word count, next word prediction, and overall length of each response.
+
+### Evaluation:
+#### ROGUE Scores
+Due to the vast amount of papers we were working with in this project.
