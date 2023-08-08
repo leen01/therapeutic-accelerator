@@ -13,7 +13,8 @@ For building virtual environment. We used poetry to handle dependencies. The vir
 
 ## Links to deliverables
 
-web deliverable: https://vanivk14.wixsite.com/tagpt
+web deliverable: https://vanivk14.wixsite.com/tagpt 
+
 demo of app: https://app.hex.tech/604dd43f-9bf2-4f53-b2ad-a57886ed9dc6/app/d8ff2ed8-06ad-4d32-892e-def0c050dd4f/latest
 
 ## Organization of this Repository
