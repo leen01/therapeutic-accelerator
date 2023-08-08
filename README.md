@@ -18,9 +18,11 @@ In order to run these models on your local device, you will need to install the 
 
 ## Links to deliverables
 
-web deliverable: https://vanivk14.wixsite.com/tagpt 
+Web Deliverable: https://vanivk14.wixsite.com/tagpt 
 
-demo of app: https://app.hex.tech/604dd43f-9bf2-4f53-b2ad-a57886ed9dc6/app/d8ff2ed8-06ad-4d32-892e-def0c050dd4f/latest
+Demo of App: https://app.hex.tech/604dd43f-9bf2-4f53-b2ad-a57886ed9dc6/app/d8ff2ed8-06ad-4d32-892e-def0c050dd4f/latest
+
+Final Presentation: Therapeutic Accelerator - Final Presentation.pdf in main branch
 
 ## Organization of this Repository
   
