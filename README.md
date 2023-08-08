@@ -1,6 +1,6 @@
 # therapeutic_accelerator
 
-## Authors: Nicholas Lee, Vani Vijayakumar, Nic Brathwaite
+### Authors: Nicholas Lee, Vani Vijayakumar, Nic Brathwaite
 
 ## Directory Descriptions
 
