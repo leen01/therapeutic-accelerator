@@ -1,5 +1,5 @@
 # Therapeutic Accelerator: An AI Research Assistant
-Authors: Nicholas Lee, Vani Vijayakumar, Nic Brathwaite,
+Authors: Nicholas Lee, Vani Vijayakumar, Nic Brathwaite
 
 ## Mission
 Our mission is to use artificial intelligence to accelerate pharmaceutical development by reducing time spent on literature reviews more time in the lab
@@ -13,10 +13,13 @@ With our innovative and insightful tool, we strive to disseminate biomedical kno
 - Scripts: Automation of data extraction
 
 ### Database Work: 
-Work on setting up the Postgresql Database using PostgresML to retrieve relevant papers using cosine distance. 
+We attemped multiple solutions for setting up our initial database using tools such as Chroma and VectorStores. However, we ultimatley decided to set up our Postgresql Database using PostgresML to retrieve relevant papers using cosine distance.  
 
 
 ### Models:
-- Base models: ...
+- Base models: Our initial models consisted of using the huggingface library packages [here](https://huggingface.co/docs/transformers/index) to test the limit and fluency of the transformer model generated answers and summaries. We began by using google collab to create T5, BioBERT, and BioGPT models to condense the abstract of papers we had previously encoded.
+Our initial findings showed that the T5 model worked best for loading, tokenizing, embedding and decoding our abstracts to generate summeries and Q&A. While BioBERT and BioGPT worked, they required more computational power to run and were significantky slower than T5.
+
+T5 is an encoder - decoder model pre-trained on various tasks that works well with text tranformation and self supervised or unsupervised learning T5 Documentation:[here](https://huggingface.co/docs/transformers/model_doc/t5). 
 - Similarity: ...
 - Model Work: ...
