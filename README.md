@@ -24,23 +24,27 @@ demo of app: https://app.hex.tech/604dd43f-9bf2-4f53-b2ad-a57886ed9dc6/app/d8ff2
 
 ## Organization of this Repository
   
-##### Data
+##### data Folder
 
 API Calls / S3 data file / Duck DB work to get data from Semantic Scholar.  
 
-##### EDA 
+##### EDA Folder
 
 Exploratory analysis for dataset, including filtering process for data. 
 
-##### Similiarty 
+##### similiarty Folder 
 
 Notebooks, SQL script, and Terminal code related to Similiarity model.  Notebook "Final Similiarity" has all of the final functions. 
 
-##### Model Eval 
+##### Base_Models & latest_models Folder
+
+All work related to summarization and Q&A modeling, wit latest_models containing the final notebooks of each model we tested. 
+
+##### Model Eval Folder
 
 Notebooks related to T5 Model and Langchain Model evaluation. 
 
-##### Web Deliverable
+##### Web Deliverable Folder
 
 Final Notebook for hex web app.
 
