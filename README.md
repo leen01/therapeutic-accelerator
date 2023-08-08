@@ -12,25 +12,25 @@ With our innovative and insightful tool, we strive to disseminate biomedical kno
 - Setup: for building virtual environment. We used poetry to handle dependencies. The virtual environment can be setup using [these instructions](https://python-poetry.org/docs/) from poetry
 - Folders:
   
-### Data <br />
+##### Data
 
-API Calls / S3 data file / Duck DB work to get data from Semantic Scholar.  <br />
+API Calls / S3 data file / Duck DB work to get data from Semantic Scholar.  
 
-### EDA <br />
+##### EDA 
 
-Exploratory analysis for dataset, including filtering process for data.  <br />
+Exploratory analysis for dataset, including filtering process for data. 
 
-### Similiarty <br />
+##### Similiarty 
 
-Notebooks, SQL script, and Terminal code related to Similiarity model.  Notebook "Final Similiarity" has all of the final functions. <br />
+Notebooks, SQL script, and Terminal code related to Similiarity model.  Notebook "Final Similiarity" has all of the final functions. 
 
-### Model Eval <br />
+##### Model Eval 
 
-Notebooks related to T5 Model and Langchain Model evaluation.  <br />
+Notebooks related to T5 Model and Langchain Model evaluation. 
 
-### Web Deliverable <br />
+##### Web Deliverable
 
-Final Notebook for hex web app. <br />
+Final Notebook for hex web app.
 
 
 ### Database Work: 
