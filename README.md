@@ -57,7 +57,6 @@ The hugging face transformers required additional functions to handle larger inp
 In order to run these models on your local device, you will need to install the packages within our required.txt file. The notebook files will contain the correct import calls.
 
 ## Evaluation:
-#### ROGUE Scores:
 Our best evaluation and fluency check was using the L1 and L2 rouge scores to compare the common occurence of words from our generated summaries with the abstracts themseleves. Thid was a low cost and standardized way to benchmark our models. 
 
 ## Conclusion
