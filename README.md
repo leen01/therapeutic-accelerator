@@ -9,7 +9,6 @@ With our innovative and insightful tool, we strive to disseminate biomedical kno
 
 ## Using this repo
 
-### Setup
 For building virtual environment. We used poetry to handle dependencies. The virtual environment can be setup using [these instructions](https://python-poetry.org/docs/) from poetry
 
 ## Organization of this Repository:
@@ -35,11 +34,11 @@ Notebooks related to T5 Model and Langchain Model evaluation.
 Final Notebook for hex web app.
 
 
-### Database Work: 
+## Database Work: 
 We attemped multiple solutions for setting up our initial database using tools such as Chroma and VectorStores. However, we ultimatley decided to set up our Postgresql Database using PostgresML to retrieve relevant papers using cosine distance.  
 
 
-### Models:
+## Models:
 #### Base models: 
 Our initial models consisted of using the huggingface library packages [here](https://huggingface.co/docs/transformers/index) to test the limit and fluency of the transformer model generated answers and summaries. We began by using google collab to create T5, BioBERT, and BioGPT models to condense the abstract of papers we had previously encoded.
 Our initial findings showed that the T5 model worked best for loading, tokenizing, embedding and decoding our abstracts to generate summeries and Q&A. While BioBERT and BioGPT worked, they required more computational power to run and were significantly slower than T5. Our best performing model was a combination of OpenAI and LangChain. LangChain provided its own methods for reforming papers that enabled us to work with full text documents to generate answers and summaries quicker than the huggingface models.
@@ -54,13 +53,13 @@ LangChain provides the software architecture necessary to process large volumes 
   
 The hugging face transformers required additional functions to handle larger inputs of text and our research led us to discover models such as LED (LongtransformerEncoderDecoder), BigBirdPegasus, variations of T5, variations of LED, and pipelines that utilize a combination of tokenizers and models to perform specific tasks. When generating solutions we adjusted additional parameters of the model such as the search beams, repeat n gram size, probability distribution threshold, unique word count, next word prediction, and overall length of each response.
 
-### Model Instructions
+## Model Instructions
 In order to run these models on your local device, you will need to install the packages within our required.txt file. The notebook files will contain the correct import calls.
 
-### Evaluation:
+## Evaluation:
 #### ROGUE Scores:
 Our best evaluation and fluency check was using the L1 and L2 rouge scores to compare the common occurence of words from our generated summaries with the abstracts themseleves. Thid was a low cost and standardized way to benchmark our models. 
 
-### Conclusion
+## Conclusion
 We hope that phramacist, scientist, researchers, students, and those who come across our project find the best suitable use for it within their professional and academic careers.
 
