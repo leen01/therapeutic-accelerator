@@ -9,7 +9,12 @@ With our innovative and insightful tool, we strive to disseminate biomedical kno
 
 ## Using this repo
 
-For building virtual environment. We used poetry to handle dependencies. The virtual environment can be setup using [these instructions](https://python-poetry.org/docs/) from poetry
+##### Repo Dependencies
+
+For building virtual environment. We used poetry to handle dependencies. The virtual environment can be setup using [these instructions](https://python-poetry.org/docs/) from poetry. 
+
+##### Model Instructions
+In order to run these models on your local device, you will need to install the packages within our required.txt file. The notebook files will contain the correct import calls.
 
 ## Links to deliverables
 
@@ -58,9 +63,6 @@ In order to allow users to expand their knowledge base of a topic, we created a 
 LangChain provides the software architecture necessary to process large volumes of textual data paired with LLMs. For our project, we chose OpenAi because of how well it integrates with LangChain and it's flexibility to handle abstracts, full text documents, and perform Q&A with the LangChain framework. The structure for the summarization model handles text by mapping and reducing documents into partitioned segments to be fed into our model and generating a solution that encompasses each portion of a document. While our Q&A model uses a refined approach by thoroughly reviewing a given document and continuosly updating its generated answer as it parses it through the model.
   
 The hugging face transformers required additional functions to handle larger inputs of text and our research led us to discover models such as LED (LongtransformerEncoderDecoder), BigBirdPegasus, variations of T5, variations of LED, and pipelines that utilize a combination of tokenizers and models to perform specific tasks. When generating solutions we adjusted additional parameters of the model such as the search beams, repeat n gram size, probability distribution threshold, unique word count, next word prediction, and overall length of each response.
-
-## Model Instructions
-In order to run these models on your local device, you will need to install the packages within our required.txt file. The notebook files will contain the correct import calls.
 
 ## Evaluation
 Our best evaluation and fluency check was using the L1 and L2 rouge scores to compare the common occurence of words from our generated summaries with the abstracts themseleves. Thid was a low cost and standardized way to benchmark our models. 
