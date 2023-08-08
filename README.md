@@ -10,7 +10,28 @@ With our innovative and insightful tool, we strive to disseminate biomedical kno
 # Using this repo
 ## Organization of this Repository
 - Setup: for building virtual environment. We used poetry to handle dependencies. The virtual environment can be setup using [these instructions](https://python-poetry.org/docs/) from poetry
-- Scripts: Automation of data extraction
+- Folders:
+  
+### Data <br />
+
+API Calls / S3 data file / Duck DB work to get data from Semantic Scholar.  <br />
+
+### EDA <br />
+
+Exploratory analysis for dataset, including filtering process for data.  <br />
+
+### Similiarty <br />
+
+Notebooks, SQL script, and Terminal code related to Similiarity model.  Notebook "Final Similiarity" has all of the final functions. <br />
+
+### Model Eval <br />
+
+Notebooks related to T5 Model and Langchain Model evaluation.  <br />
+
+### Web Deliverable <br />
+
+Final Notebook for hex web app. <br />
+
 
 ### Database Work: 
 We attemped multiple solutions for setting up our initial database using tools such as Chroma and VectorStores. However, we ultimatley decided to set up our Postgresql Database using PostgresML to retrieve relevant papers using cosine distance.  
