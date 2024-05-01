@@ -23,13 +23,13 @@ import chromadb
 from chromadb.config import Settings
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
 
+
 # Hard Coded Variables --------------------------------------------------------
 chunk_size = 1024
 chroma_server_host = "34.238.51.66"
 
-
-# Functions -------------------------------------------------------------------
-class text_splitter:
+# Text Processing Functions -------------------------------------------------------------------
+class create_text_splitter:
     def __init__(self, tokenizer, max_length=512, chunk_size=512, chunk_overlap=20):
         self.tokenizer = tokenizer
         self.chunk_size = chunk_size
@@ -49,7 +49,7 @@ class text_splitter:
 
     def create_text_splitter(self):
         """Create text splitter for processing the texts"""
-        text_splitter = RecursiveCharacterTextSplitter(
+        self.text_splitter = RecursiveCharacterTextSplitter(
             # separator = ["\n\n", "\n", ". ", "? ", "! ", "; "],
             chunk_size=self.chunk_size,
             chunk_overlap=self.chunk_overlap,
@@ -57,34 +57,65 @@ class text_splitter:
         )
         return text_splitter
 
-
 # Create embeddings function with specter model
 class specter_ef(EmbeddingFunction):
     def __init__(
-        self,
-        model=AutoModel.from_pretrained("allenai/specter"),
-        tokenizer=AutoTokenizer.from_pretrained("allenai/specter"),
+        self, 
+        model: AutoModel, 
+        tokenizer
     ):
-        self.model = model
+        self.model = model, 
         self.tokenizer = tokenizer
+        self.chunk_size = 512
+        self.chunk_overlap = 20
+        self.max_length = 512
+        
+    def token_len(self, text):
+        """Get the length of tokens from text"""
+        tokens = self.tokenizer(
+            text,
+            padding=True,
+            truncation=True,
+            return_tensors="pt",
+            max_length=self.max_length,
+        )["input_ids"][0]
+        return len(tokens)
 
-    def embed_documents(self, texts: Documents) -> Embeddings:
+    def create_text_splitter(self):
+        """Create text splitter for processing the texts"""
+        self.text_splitter = RecursiveCharacterTextSplitter(
+            # separator = ["\n\n", "\n", ". ", "? ", "! ", "; "],
+            chunk_size=self.chunk_size,
+            chunk_overlap=self.chunk_overlap,
+            length_function=self.token_len,
+        )
+    
+    def split_text(self, text):
+        # split text into chunks
+        
+        texts = self.text_splitter.split_text(text)
+        
         text_list = [re.sub("\n", " ", p) for p in texts]
         texts = [re.sub("\s\s+", " ", t) for t in text_list]
 
+        return texts
+    
+    def embed_documents(self, texts: Documents) -> Embeddings:
+        
         # embed the documents somehow
         embeddings = []
 
         for text in texts:
-            inputs = self.tokenizer(
-                text, padding=True, truncation=True, return_tensors="pt", max_length=512
-            )
-            result = self.model(**inputs)
-            embeddings.append(result.last_hidden_state[:, 0, :])
+            
+            inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt", max_length=512)
+            
+            result = self.model[0](**inputs).last_hidden_state[:, 0, :].detach().numpy()[0].tolist()
+            
+            embeddings.append(result)
 
         return embeddings
 
-
+# Chroma DB Functions --------------------------------------------------------------------------------
 def create_chroma_client(chroma_server_host):
     chroma_client = chromadb.Client(
         Settings(
@@ -98,7 +129,7 @@ def create_chroma_client(chroma_server_host):
     print("Nanosecond heartbeat on server", chroma_client.heartbeat())
 
     # Check Existing connections
-    display(chroma_client.list_collections())
+    print(chroma_client.list_collections())
 
     return chroma_client
 
@@ -109,8 +140,7 @@ def get_question_embeddings(question):
 
     return question_embeddings
 
-
-def query_chroma(collection, question, n_results=10):
+def query_chroma_with_embeddings(collection, question, n_results=10):
     # Query ChromaDB with Embeddings
     question_embeddings = get_question_embeddings(question)
 
@@ -128,6 +158,7 @@ def query_chroma(collection, question, n_results=10):
             pass
 
     return results
+
 
 # Main ------------------------------------------------------------------------
 # tokenizer = AutoTokenizer.from_pretrained("allenai/specter")
