@@ -1,0 +1,10 @@
+ 02-05-2024 12:00:28:345 [pid=4101 tid=4101] ERROR  0:140 unable to load,  liburcu-bp.so.6 
+
+ 02-05-2024 12:00:28:346 [pid=4101 tid=4101] ERROR  0:140 unable to load,  liburcu-bp.so.1 
+
+ 02-05-2024 12:00:28:346 [pid=4101 tid=4101] WARN   0:168 failed to open /proc/driver/nvidia-fs/devcount  error: No such file or directory
+ 02-05-2024 12:00:28:346 [pid=4101 tid=4101] NOTICE  cufio-drv:727 running in compatible mode
+ 02-05-2024 12:00:28:347 [pid=4101 tid=4101] ERROR  cufio-plat:98 cannot open path /sys/bus/pci/devices/0000:01:00.0/resource No such file or directory
+ 02-05-2024 12:00:28:347 [pid=4101 tid=4101] WARN   cufio-plat:431 GPU index 0 NVIDIA GeForce RTX 3060: Model Not Supported
+ 02-05-2024 12:00:28:347 [pid=4101 tid=4101] WARN   cufio-udev:168 failed in udev device create: /sys/bus/pci/devices/0000:01:00.0
+ 02-05-2024 12:00:28:432 [pid=4101 tid=4101] ERROR  cufio-topo-udev:431 no device entries present in platform topology

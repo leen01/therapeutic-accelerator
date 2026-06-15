@@ -6,8 +6,7 @@ authors = ["Nicholas Lee <nick.lee@berkeley.edu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-pandas = "^2.0.3"
+python = "^3.11"
 seaborn = "^0.12.2"
 python-dotenv = "^1.0.1"
 semanticscholar = "^0.8.0"
@@ -16,8 +15,8 @@ jsonlines = "^4.0.0"
 duckdb = "^0.10.2"
 chardet = "^5.2.0"
 sqlalchemy = "^2.0.29"
-pyarrow = "^16.0.0"
 fastparquet = "^2024.2.0"
+
 
 [tool.poetry.group.dev.dependencies]
 ipywidgets = "^8.0.7"
@@ -30,6 +29,14 @@ autodoc-pydantic = "^1.9.0"
 pydantic = "^1.10.0"
 pytest = "^6.0.0"
 
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
+name="rapids"
+url="https://pypi.nvidia.com"
+priority="supplemental"
 
 [build-system]
 requires = ["poetry-core"]
